@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: installed upack run :choco install upack
+      - name: installed upack
+        run :choco install upack
       - name: updated content and version of Betsson.RootCA/7.0.0
         run: null
       - name: created a new Betsson.RootCA-8.0.0.upack file run :upack pack
