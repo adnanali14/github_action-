@@ -1,0 +1,25 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: installed upack run :choco install upack
+      - name: updated content and version of Betsson.RootCA/7.0.0
+        run: null
+      - name: created a new Betsson.RootCA-8.0.0.upack file run :upack pack
+          Betsson.RootCA-8.0.0 --metadata=upack.json
+      uses: nugetfeed/nugetfeed-github-action@master
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} - name:pushed new package version to feed
+  run: upack push .\Betsson.RootCA-8.0.0.upack
+    https://nuget-tec.local/upack/Techsson.UPack
+    --user=api:API-KEY-LOGIN-TO-PROGET-ADMIN-TO-GET-KEY
