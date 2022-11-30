@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checks-out  repository under $GITHUB_WORKSPACE, so that job can access
+    - uses: actions/checkout@v2   
+
+    - name: installed upack
+      uses: SonarSource/sonarcloud-github-action@master
+      run :choco install upack
+
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.pit_TOKEN }}
+        SCAN_PULL_REQUEST: true
+
+    # updated the content and version of Betsson.RootCA/7.0.0
+    - name: updated content and version of Betsson.RootCA/7.0.0
+      run: 
+
+    - name: created a new Betsson.RootCA-8.0.0.upack file
+      run :upack pack Betsson.RootCA-8.0.0 --metadata=upack.json
+ 
+
+      uses: Secbyte/dotnet-sonarscanner@v2.2
+      with:
+        buildCommand: dotnet build MHC_ASPNetCore.sln 
+        projectKey: myhealthinternalcsharp
+        projectName: myhealthinternal
+        sonarOrganisation: computerenterprisesinc
+        beginArguments: >
+          /d:sonar.projectBaseDir="../"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+ 
+   # - name: pushed new package version to feed
+      run: upack push .\Betsson.RootCA-8.0.0.upack https://nuget-techsson.bde.local/upack/Techsson.UPack --user=api:API-KEY-LOGIN-TO-PROGET-ADMIN-TO-GET-KEY
+
